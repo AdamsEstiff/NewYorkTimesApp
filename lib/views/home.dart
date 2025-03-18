@@ -1,5 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:newyorktimesapp/components/card_news.dart';
+
+import '../models/news.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -9,7 +12,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  @override
+  List<News> news = [];
+
   @override
   void initState() {
     getNews();
@@ -17,26 +21,34 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> getNews() async {
-    final response = await Dio().get('https://api.nytimes.com/svc/mostpopular/v2/shared/1/facebook.json?api-key=Lqo0YKENCZ9CxQJa9djDu0tJM0g4nulQ');
-    final results= response.data["results"];
-    for(var result in results){
+    final response = await Dio().get(
+        'https://api.nytimes.com/svc/mostpopular/v2/shared/1/facebook.json?api-key=Lqo0YKENCZ9CxQJa9djDu0tJM0g4nulQ');
+    final results = response.data["results"];
+    for (var result in results) {
       print(result);
+      news.add(News.fromJson(result));
     }
+    setState(() {
+      news;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar( title: Text("New York Times"),),
-      body: ListView(
-        children: [
-          Container(
-            padding: const EdgeInsets.fromLTRB(25, 10, 25, 10),
+        backgroundColor: Color(0xFF1C1C1D),
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          title: SizedBox(
+            width: double.infinity,
             child: Image.network(
-                'https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/The_New_York_Times_Logo.svg/2560px-The_New_York_Times_Logo.svg.png'),
+                'https://cdn.freebiesupply.com/images/large/2x/new-york-times-logo-black-and-white.png'),
           ),
-        ],
-      ),
-    );
+        ),
+        body: ListView.builder(
+            itemCount: news.length,
+            itemBuilder: (context, idx) {
+              return CardNews(notice: news[idx]);
+            }));
   }
 }

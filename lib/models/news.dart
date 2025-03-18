@@ -9,4 +9,12 @@ class News {
       required this.title,
       required this.abstract,
       required this.media});
+
+  factory News.fromJson(json) {
+    return News(
+        id: json["id"].toString(),
+        title: json['title'],
+        abstract: json['abstract'],
+        media: json["media"]);
+  }
 }
