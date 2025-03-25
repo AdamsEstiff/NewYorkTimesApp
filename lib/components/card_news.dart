@@ -15,10 +15,10 @@ class CardNews extends StatelessWidget {
       child: Column(
         children: [
           ImageNews(
-            url: notice.media.last["media-metadata"].last["url"],
+            url: notice.media?.url,
           ),
           Text(
-            notice.title,
+            "${notice.title}",
             style: TextStyle(
                 color: Color(0xffe2e5e9),
                 fontSize: 18,

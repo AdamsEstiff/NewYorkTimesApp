@@ -21,13 +21,7 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> getNews() async {
-    final response = await Dio().get(
-        'https://api.nytimes.com/svc/mostpopular/v2/shared/1/facebook.json?api-key=Lqo0YKENCZ9CxQJa9djDu0tJM0g4nulQ');
-    final results = response.data["results"];
-    for (var result in results) {
-      print(result);
-      news.add(News.fromJson(result));
-    }
+    news = await News().getNews();
     setState(() {
       news;
     });
@@ -35,6 +29,15 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    if (news.isEmpty) {
+      return Material(
+        child: Container(
+          color: Color(0xFF1C1C1D),
+          height: MediaQuery.of(context).size.height,
+          child: Center(child: Text("Cargando...")),
+        ),
+      );
+    }
     return Scaffold(
         backgroundColor: Color(0xFF1C1C1D),
         appBar: AppBar(

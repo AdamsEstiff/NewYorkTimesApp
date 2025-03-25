@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 
 class ImageNews extends StatelessWidget {
   const ImageNews({super.key, required this.url});
-  final String url;
+  final String? url;
 
   @override
   Widget build(BuildContext context) {
+    if(url==null){
+      return Container();
+    }
     return Image.network(
       "$url",
       loadingBuilder: (BuildContext context, Widget child,
